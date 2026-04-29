@@ -964,30 +964,52 @@ function initAnalyse() {
     {l:'Ménage moyen',v:avg(menages)+' pers.',s:'médiane: '+med(menages)},
     {l:'Taux besoins crit.',v:Math.round(data.filter(d=>d.besoins.includes('Eau potable')||d.besoins.includes('Électricité')).length/data.length*100)+'%',s:'eau ou électricité'},
   ].map(c=>`<div class="stat-card"><div class="stat-label">${c.l}</div><div class="stat-value" style="font-size:22px">${c.v}</div><div class="stat-sub">${c.s}</div></div>`).join('');
-}<script>
-async function loginSansMotDePasse() {
-    const usernameInput = document.querySelector('input[type="text"]');
-    const username = usernameInput.value;
+} 
+</script>
+  <script>
+document.addEventListener("DOMContentLoaded", async function () {
 
-    const res = await fetch("https://tchalongmanfomegane24f2865.pythonanywhere.com/api/token/", {
-        method: "POST",
+    // 1. vérifier si token déjà présent
+    let token = localStorage.getItem("access");
+
+    // 2. si pas de token → login automatique
+    if (!token) {
+        const res = await fetch("https://tchalongmanfomegane24f2865.pythonanywhere.com/api/token/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                username: "deesse_pythondeb"  // 👈 ton user
+            })
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+            token = data.access;
+            localStorage.setItem("access", token);
+        } else {
+            console.error("Erreur login", data);
+            return;
+        }
+    }
+
+    // 3. appeler ton API automatiquement
+    const response = await fetch("https://tchalongmanfomegane24f2865.pythonanywhere.com/api/fiches/", {
         headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ username })
+            "Authorization": "Bearer " + token
+        }
     });
 
-    const data = await res.json();
+    const fiches = await response.json();
 
-    if (res.ok) {
-        localStorage.setItem("access", data.access);
-        alert("Connecté !");
-    } else {
-        alert("Erreur: " + JSON.stringify(data));
-    }
-}
-</script>
-  
+    console.log("Fiches:", fiches);
+
+    // (optionnel) afficher dans la page
+    document.body.innerHTML += "<pre>" + JSON.stringify(fiches, null, 2) + "</pre>";
+
+});
 </script>
 </body>
 </html>
