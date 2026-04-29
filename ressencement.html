@@ -966,49 +966,17 @@ function initAnalyse() {
   ].map(c=>`<div class="stat-card"><div class="stat-label">${c.l}</div><div class="stat-value" style="font-size:22px">${c.v}</div><div class="stat-sub">${c.s}</div></div>`).join('');
 } 
 </script>
-  <script>
-document.addEventListener("DOMContentLoaded", async function () {
+<script>
+  const token = localStorage.getItem("access");
 
-    // 1. vérifier si token déjà présent
-    let token = localStorage.getItem("access");
-
-    // 2. si pas de token → login automatique
-    if (!token) {
-        const res = await fetch("https://tchalongmanfomegane24f2865.pythonanywhere.com/api/token/", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                username: "deesse_pythondeb"  // 👈 ton user
-            })
-        });
-
-        const data = await res.json();
-
-        if (res.ok) {
-            token = data.access;
-            localStorage.setItem("access", token);
-        } else {
-            console.error("Erreur login", data);
-            return;
-        }
+fetch("https://tchalongmanfomegane24f2865.pythonanywhere.com/api/fiches/", {
+    headers: {
+        "Authorization": "Bearer " + token
     }
-
-    // 3. appeler ton API automatiquement
-    const response = await fetch("https://tchalongmanfomegane24f2865.pythonanywhere.com/api/fiches/", {
-        headers: {
-            "Authorization": "Bearer " + token
-        }
-    });
-
-    const fiches = await response.json();
-
-    console.log("Fiches:", fiches);
-
-    // (optionnel) afficher dans la page
-    document.body.innerHTML += "<pre>" + JSON.stringify(fiches, null, 2) + "</pre>";
-
+})
+.then(res => res.json())
+.then(data => {
+    console.log(data);
 });
 </script>
 </body>
