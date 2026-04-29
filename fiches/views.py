@@ -241,7 +241,30 @@ def export_csv(request):
             f.date_saisie.strftime('%d/%m/%Y'),
             f.saisi_par.username if f.saisi_par else '',
         ])
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework import status
+from django.contrib.auth.models import User
+from rest_framework_simplejwt.tokens import RefreshToken
 
+class SimpleLoginView(APIView):
+    def post(self, request):
+        username = request.data.get("username")
+
+        if not username:
+            return Response({"error": "Username requis"}, status=400)
+
+        try:
+            user = User.objects.get(username=username)
+        except User.DoesNotExist:
+            return Response({"error": "Utilisateur inexistant"}, status=404)
+
+        refresh = RefreshToken.for_user(user)
+
+        return Response({
+            "access": str(refresh.access_token),
+            "refresh": str(refresh)
+        })
     content = '\ufeff' + output.getvalue()
     response = HttpResponse(content, content_type='text/csv; charset=utf-8')
     filename = f'recensement_{date.today().isoformat()}.csv'
