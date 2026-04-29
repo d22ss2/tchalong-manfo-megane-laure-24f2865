@@ -15,6 +15,7 @@ ALLOWED_HOSTS = [
     '.onrender.com',
     'localhost',
     '127.0.0.1',
+    'd22ss2.pythonanywhere.com'
 ]
 
 # APPLICATIONS
@@ -31,7 +32,7 @@ INSTALLED_APPS = [
     'corsheaders',
 
     # your apps
-    # 'your_app',
+    'fiches',
 ]
 
 # MIDDLEWARE
