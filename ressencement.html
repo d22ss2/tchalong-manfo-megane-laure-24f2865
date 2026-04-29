@@ -967,17 +967,22 @@ function initAnalyse() {
 } 
 </script>
 <script>
-  const token = localStorage.getItem("access", "access": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzc3NDg3MTYzLCJpYXQiOjE3Nzc0ODY4NjMsImp0aSI6ImE0ZDdlYzE1ZTRlMTQwYmM5ZWU1NjdlYzFhZDBlMmE0IiwidXNlcl9pZCI6MX0.WeOeV2w31b0rDXplyzWX0WBrIeF_RaoEHAmAMgFe41s"
-});
+  
+</script><script>
+const token = ""access": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzc3NDg3MTYzLCJpYXQiOjE3Nzc0ODY4NjMsImp0aSI6ImE0ZDdlYzE1ZTRlMTQwYmM5ZWU1NjdlYzFhZDBlMmE0IiwidXNlcl9pZCI6MX0.WeOeV2w31b0rDXplyzWX0WBrIeF_RaoEHAmAMgFe41s"
+}";
 
 fetch("https://tchalongmanfomegane24f2865.pythonanywhere.com/api/fiches/", {
     headers: {
-        "Authorization": "Bearer " + tokenlocalStorage.setItem("access", "COLLE_TON_TOKEN_ICI");
+        "Authorization": "Bearer " + token
     }
 })
 .then(res => res.json())
 .then(data => {
     console.log(data);
+
+    // afficher dans la page
+    document.body.innerHTML += "<pre>" + JSON.stringify(data, null, 2) + "</pre>";
 });
 </script>
 </body>
