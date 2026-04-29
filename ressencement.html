@@ -964,7 +964,30 @@ function initAnalyse() {
     {l:'Ménage moyen',v:avg(menages)+' pers.',s:'médiane: '+med(menages)},
     {l:'Taux besoins crit.',v:Math.round(data.filter(d=>d.besoins.includes('Eau potable')||d.besoins.includes('Électricité')).length/data.length*100)+'%',s:'eau ou électricité'},
   ].map(c=>`<div class="stat-card"><div class="stat-label">${c.l}</div><div class="stat-value" style="font-size:22px">${c.v}</div><div class="stat-sub">${c.s}</div></div>`).join('');
+}<script>
+async function loginSansMotDePasse() {
+    const usernameInput = document.querySelector('input[type="text"]');
+    const username = usernameInput.value;
+
+    const res = await fetch("https://tchalongmanfomegane24f2865.pythonanywhere.com/api/token/", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ username })
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+        localStorage.setItem("access", data.access);
+        alert("Connecté !");
+    } else {
+        alert("Erreur: " + JSON.stringify(data));
+    }
 }
+</script>
+  
 </script>
 </body>
 </html>
